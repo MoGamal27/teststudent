@@ -1,24 +1,28 @@
-import { createContext } from "react";
-import { doctors} from "/src/assets/assets_frontend/assets.js"
+import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+
+
 export const AppContext = createContext();
 
+export const AppProvider = ({ children }) => {
+    const [teachers, setTeachers] = useState([]);
 
-const AppContextProvider = (props)=> {
+    useEffect(() => {
+        const fetchTeachers = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/teachers'); // Adjust the URL as necessary
+                setTeachers(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
-const currncySymbol = "$"
-
-
-const value = {
-        doctors,currncySymbol
-}
-
+        fetchTeachers();
+    }, []);
 
     return (
-        <AppContext.Provider value={value}>
-            {props.children}
+        <AppContext.Provider value={{ teachers }}>
+            {children}
         </AppContext.Provider>
-    )
-
-}
-
-export default AppContextProvider
+    );
+};
