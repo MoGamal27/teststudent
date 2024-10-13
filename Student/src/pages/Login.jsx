@@ -16,7 +16,9 @@ export default function Login() {
 
         try {
             const response = await axios.post(url, payload);
-            console.log(response.data); // Handle response as needed
+            console.log(response.data); 
+            // Store the token
+         localStorage.setItem('token', response.data.token);
             navigate('/');
         } catch (error) {
             console.error(error.response.data); // Handle error as needed
